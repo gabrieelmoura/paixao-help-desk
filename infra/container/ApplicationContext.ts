@@ -1,4 +1,4 @@
-import { DependencyIdentifier } from "../../core/application/Application"
+import { DependencyIdentifier } from "../../core/container/Container"
 
 export const ApplicationContextIdentifier: DependencyIdentifier<ApplicationContext> = { key: "Context" }
 

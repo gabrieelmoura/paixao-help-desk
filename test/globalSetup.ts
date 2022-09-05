@@ -1,10 +1,12 @@
-import Application from "../core/application/Application"
-import ApplicationFactory from "../infra/application/ApplicationFactory"
+import Container from "../core/container/Container"
 import path from "path"
 import { GenericContainer, StartedTestContainer } from "testcontainers"
+import makeApplicationContainer from "../infra/container/makeApplicationContainer"
+import ApplicationContext from "../infra/container/ApplicationContext"
+import makeRequestContainer from "../infra/container/makeRequestContainer"
 
 declare global {
-  var app: Application
+  var app: Container
   var databaseContainer: StartedTestContainer
 }
 
@@ -19,31 +21,33 @@ async function makeTestDatabase() {
     .start()
 }
 
-async function makeTestApplication(params: { databasePort: number }) {
-  
-  const factory = new ApplicationFactory()
+async function makeTestContainer(context: ApplicationContext) {
 
-  return await factory.create({
-  
-    env: "TEST",
-  
-    database: {
-      host: "localhost",
-      user: "root",
-      password: "12345",
-      port: params.databasePort,
-      database: "PHD"
-    }
-  
-  })
+  const appContainer = makeApplicationContainer(context)
+  const requestContainer = makeRequestContainer(appContainer)
+
+  return requestContainer
 
 }
 
 export default async function() {
   
-  global.databaseContainer = await makeTestDatabase();
-  global.app = await makeTestApplication({ 
-    databasePort: global.databaseContainer.getMappedPort(3306)
-  });
+  global.databaseContainer = await makeTestDatabase()
+
+  const testContext: ApplicationContext = {
+    
+    env: "TEST",
+
+    database: {
+      host: "localhost",
+      user: "root",
+      password: "12345",
+      port: global.databaseContainer.getMappedPort(3306),
+      database: "PHD"
+    }
+
+  }
+  
+  global.app = await makeTestContainer(testContext)
 
 }

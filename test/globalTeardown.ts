@@ -1,12 +1,12 @@
 import { StartedTestContainer } from "testcontainers"
-import Application from "../core/application/Application"
+import Container from "../core/container/Container"
 
 declare global {
-  var app: Application
+  var app: Container
   var databaseContainer: StartedTestContainer
 }
 
 export default async function() {
-  await app.end()
+  await app.end(true)
   await databaseContainer.stop()
 }

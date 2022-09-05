@@ -1,4 +1,4 @@
-import { DependencyIdentifier } from "../application/Application"
+import { DependencyIdentifier } from "../container/Container"
 import { User } from "../entities"
 
 export const UserRepositoryIdentifier: DependencyIdentifier<UserRepository> = { key: "UserRepository" }

@@ -1,9 +1,9 @@
-import Application from "../../core/application/Application"
+import Container from "../../core/container/Container"
 import Database, { DatabaseIdentifier } from "../../core/database/Database"
 import DBUserRepository from "./DBUserRepository"
 
 declare global {
-  var app: Application
+  var app: Container
 }
 
 describe("DBUserRepository", () => {

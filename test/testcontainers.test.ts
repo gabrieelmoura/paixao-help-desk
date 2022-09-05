@@ -1,10 +1,5 @@
 import axios from "axios"
 import { GenericContainer, StartedTestContainer } from "testcontainers"
-import Application from "../core/application/Application"
-
-declare global {
-  var application: Application
-}
 
 describe.skip("TestContainers", () => {
 

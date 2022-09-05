@@ -1,5 +1,5 @@
 import Connection from "./Connection"
-import { DependencyIdentifier } from "../application/Application"
+import { DependencyIdentifier } from "../container/Container"
 
 export const ConnectionPoolIdentifier: DependencyIdentifier<ConnectionPool> = { key: "ConnectionPool" }
 

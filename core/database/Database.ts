@@ -1,4 +1,4 @@
-import { DependencyIdentifier } from "../application/Application"
+import { DependencyIdentifier } from "../container/Container"
 
 export type Mapper<T> = (line: Record<string, string>) => T
 
