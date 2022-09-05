@@ -8,6 +8,10 @@ export default interface ApplicationContext {
 
   env: EnvType,
 
+  redis: {
+    url: string
+  }
+
   database: {
     user: string,
     password: string,

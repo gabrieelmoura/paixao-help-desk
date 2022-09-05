@@ -1,7 +1,7 @@
 import axios from "axios"
 import { GenericContainer, StartedTestContainer } from "testcontainers"
 
-describe.skip("TestContainers", () => {
+describe("TestContainers", () => {
 
   let container: StartedTestContainer
   

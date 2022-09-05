@@ -10,9 +10,11 @@ export type Finalizer<T> = (object: T) => Promise<void>
 
 export default class Container {
 
+  private destructStack: string[] = []
+
   constructor(
     private builders: { [ key: string ]: Builder<any> },
-    private finalizers: [ string, Finalizer<any> ][],
+    private finalizers: { [ key: string]: Finalizer<any> },
     private objects: { [ key: string ]: any },
     private parent?: Container
   ) {}
@@ -24,7 +26,9 @@ export default class Container {
     }
 
     if (this.builders[id.key] !== undefined) {
-      return this.objects[id.key] = await this.builders[id.key](this)  
+      const newObject = await this.builders[id.key](this)
+      this.destructStack.unshift(id.key)
+      return this.objects[id.key] = newObject
     }
 
     if (this.parent !== undefined) {
@@ -37,10 +41,10 @@ export default class Container {
 
   async end(recursive: boolean = false): Promise<void> {
     
-    for (let i = 0; i < this.finalizers.length; i++) {
-      const entry = this.finalizers[i]
-      if (this.objects[entry[0]] !== undefined) {
-        await entry[1](this.objects[entry[0]])
+    for (let i = 0; i < this.destructStack.length; i++) {
+      const key = this.destructStack[i]
+      if (this.finalizers[key] !== undefined) {
+        await this.finalizers[key](this.objects[key])
       }
     }
 

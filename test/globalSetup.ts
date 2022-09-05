@@ -8,6 +8,15 @@ import makeRequestContainer from "../infra/container/makeRequestContainer"
 declare global {
   var app: Container
   var databaseContainer: StartedTestContainer
+  var redisContainer: StartedTestContainer
+}
+
+async function makeTestRedis() {
+
+  return await new GenericContainer("redis")
+    .withExposedPorts(6379)
+    .start()
+    
 }
 
 async function makeTestDatabase() {
@@ -19,6 +28,7 @@ async function makeTestDatabase() {
   return await image
     .withExposedPorts(3306)
     .start()
+
 }
 
 async function makeTestContainer(context: ApplicationContext) {
@@ -33,6 +43,7 @@ async function makeTestContainer(context: ApplicationContext) {
 export default async function() {
   
   global.databaseContainer = await makeTestDatabase()
+  global.redisContainer = await makeTestRedis()
 
   const testContext: ApplicationContext = {
     
@@ -44,6 +55,10 @@ export default async function() {
       password: "12345",
       port: global.databaseContainer.getMappedPort(3306),
       database: "PHD"
+    },
+
+    redis: {
+      url: `redis://localhost:${ global.redisContainer.getMappedPort(6379) }`
     }
 
   }

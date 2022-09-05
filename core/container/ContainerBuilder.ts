@@ -3,7 +3,7 @@ import Container, { Builder, Finalizer, DependencyIdentifier } from "./Container
 export default class ContainerBuilder {
 
   private builders: { [key: string]: Builder<any>; } = {}
-  private finalizers: [ string, Finalizer<any> ][] = []
+  private finalizers: { [key: string]: Finalizer<any>; } = {}
   private objects: { [key: string]: any; } = {}
   private parent?: Container
 
@@ -16,7 +16,7 @@ export default class ContainerBuilder {
   }
 
   registerFinalizer<T>(id: DependencyIdentifier<T>, finalizer: Finalizer<T>): void {
-    this.finalizers.push([ id.key, finalizer ]);
+    this.finalizers[id.key] = finalizer
   }
 
   put<T>(id: DependencyIdentifier<T>, object: T): void {
