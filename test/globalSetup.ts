@@ -1,9 +1,11 @@
-import Container from "../core/container/Container"
+import Container from "../commons/container/Container"
 import path from "path"
 import { GenericContainer, StartedTestContainer } from "testcontainers"
-import makeApplicationContainer from "../infra/container/makeApplicationContainer"
-import ApplicationContext from "../infra/container/ApplicationContext"
-import makeRequestContainer from "../infra/container/makeRequestContainer"
+import { ContainerFactory } from "../commons/container/ContainerFactory"
+import modules from "../infra/config/modules"
+import RequestContext from "../infra/context/RequestContext"
+import { ApplicationContextIdentifier, RequestContextIdentifier } from "../infra/config/identifiers"
+import GenericModule from "../commons/container/GenericModule"
 
 declare global {
   var app: Container
@@ -31,12 +33,19 @@ async function makeTestDatabase() {
 
 }
 
-async function makeTestContainer(context: ApplicationContext) {
+async function makeTestContainer(context: RequestContext) {
+  
+  const appContextModule = new GenericModule(ApplicationContextIdentifier, context)
+  const requestContextModule = new GenericModule(RequestContextIdentifier, context)
 
-  const appContainer = makeApplicationContainer(context)
-  const requestContainer = makeRequestContainer(appContainer)
+  const factory = new ContainerFactory()
+  factory.addModules(modules)
+  factory.addModule(appContextModule)
+  factory.addModule(requestContextModule)
 
-  return requestContainer
+  const container = factory.getContainer({ scope: "REQUEST" })
+
+  return container
 
 }
 
@@ -45,7 +54,7 @@ export default async function() {
   global.databaseContainer = await makeTestDatabase()
   global.redisContainer = await makeTestRedis()
 
-  const testContext: ApplicationContext = {
+  const testContext: RequestContext = {
     
     env: "TEST",
 
@@ -59,7 +68,10 @@ export default async function() {
 
     redis: {
       url: `redis://localhost:${ global.redisContainer.getMappedPort(6379) }`
-    }
+    },
+
+    request: null,
+    response: null
 
   }
   

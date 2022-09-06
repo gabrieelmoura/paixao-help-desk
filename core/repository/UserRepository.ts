@@ -1,7 +1,4 @@
-import { DependencyIdentifier } from "../container/Container"
 import { User } from "../entities"
-
-export const UserRepositoryIdentifier: DependencyIdentifier<UserRepository> = { key: "UserRepository" }
 
 export type UserCreationParams = Pick<User, "name" | "email" | "password">
 

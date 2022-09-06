@@ -1,7 +1,7 @@
 import InvalidCredentialsError from "../error/InvalidCredentialsError"
 import UserRepository from "../repository/UserRepository"
 import EncryptService from "../security/EncryptService"
-import SessionService from "../session/SessionService"
+import AuthService from "../auth/AuthService"
 
 type Input = {
   email: string,
@@ -12,9 +12,9 @@ type Input = {
 export default class LoginCommand {
 
   constructor(
-    readonly userRepository: UserRepository,
-    readonly encryptService: EncryptService,
-    readonly sessionService: SessionService
+    private userRepository: UserRepository,
+    private encryptService: EncryptService,
+    private authService: AuthService
   ) {}
 
   async run(input: Input): Promise<void> {
@@ -30,7 +30,7 @@ export default class LoginCommand {
       throw new InvalidCredentialsError(input.email)
     }
 
-    await this.sessionService.startSession(input.context, user)
+    await this.authService.login(user)
   }
 
 }

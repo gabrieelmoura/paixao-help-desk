@@ -1,5 +1,5 @@
 import mysql from 'mysql2'
-import ApplicationContext from '../container/ApplicationContext'
+import ApplicationContext from '../context/ApplicationContext'
 import Connection from '../../core/database/Connection'
 import ConnectionPool from '../../core/database/ConnectionPool'
 

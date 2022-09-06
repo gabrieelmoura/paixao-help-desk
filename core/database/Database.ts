@@ -1,4 +1,3 @@
-import { DependencyIdentifier } from "../container/Container"
 
 export type Mapper<T> = (line: Record<string, string>) => T
 
@@ -26,8 +25,6 @@ export interface UpdateResult {
 export interface InsertResult {
   insertId: number
 }
-
-export const DatabaseIdentifier: DependencyIdentifier<Database> = { key: "Database" }
 
 export default interface Database {
   

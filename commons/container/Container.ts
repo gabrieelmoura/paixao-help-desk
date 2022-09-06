@@ -8,27 +8,32 @@ export interface DependencyIdentifier<T> {
 
 export type Finalizer<T> = (object: T) => Promise<void>
 
+export interface ContainerBinding<T> {
+  id: DependencyIdentifier<T>
+  builder: Builder<T>
+  finalizer?: Finalizer<T>
+  instance?: T
+}
+
 export default class Container {
 
   private destructStack: string[] = []
 
   constructor(
-    private builders: { [ key: string ]: Builder<any> },
-    private finalizers: { [ key: string]: Finalizer<any> },
-    private objects: { [ key: string ]: any },
+    private bindings: { [ key: string ]: ContainerBinding<any> },
     private parent?: Container
   ) {}
 
   async get<T>(id: DependencyIdentifier<T>): Promise<T> {
 
-    if (this.objects[id.key] !== undefined) {
-      return this.objects[id.key]
+    if (this.bindings[id.key]?.instance !== undefined) {
+      return this.bindings[id.key]?.instance
     }
 
-    if (this.builders[id.key] !== undefined) {
-      const newObject = await this.builders[id.key](this)
+    if (this.bindings[id.key] !== undefined) {
+      const newObject = await this.bindings[id.key].builder(this)
       this.destructStack.unshift(id.key)
-      return this.objects[id.key] = newObject
+      return this.bindings[id.key].instance = newObject
     }
 
     if (this.parent !== undefined) {
@@ -43,8 +48,8 @@ export default class Container {
     
     for (let i = 0; i < this.destructStack.length; i++) {
       const key = this.destructStack[i]
-      if (this.finalizers[key] !== undefined) {
-        await this.finalizers[key](this.objects[key])
+      if (this.bindings[key].finalizer !== undefined) {
+        await this.bindings[key].finalizer?.(this.bindings[key].instance)
       }
     }
 

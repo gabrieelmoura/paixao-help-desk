@@ -1,6 +1,7 @@
-import Container from "../../core/container/Container"
-import Database, { DatabaseIdentifier } from "../../core/database/Database"
+import Container from "../../commons/container/Container"
+import Database from "../../core/database/Database"
 import DBUserRepository from "./DBUserRepository"
+import { DatabaseIdentifier } from "../config/identifiers"
 
 declare global {
   var app: Container

@@ -1,5 +1,5 @@
 import { StartedTestContainer } from "testcontainers"
-import Container from "../core/container/Container"
+import Container from "../commons/container/Container"
 
 declare global {
   var app: Container

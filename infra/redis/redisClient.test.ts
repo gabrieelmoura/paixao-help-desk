@@ -1,6 +1,6 @@
 import { RedisClientType as RedisClient } from 'redis'
-import Container from '../../core/container/Container'
-import { RedisClientIdenfifier } from "./makeRedisClient"
+import { RedisClientIdenfifier } from '../config/identifiers'
+import Container from '../../commons/container/Container'
 
 declare global {
   var app: Container

@@ -1,6 +1,3 @@
-import { DependencyIdentifier } from "../container/Container"
-
-export const EncryptServiceIdentifier: DependencyIdentifier<EncryptService> = { key: "EncryptService" }
 
 export default interface EncryptService {
 

@@ -1,6 +1,3 @@
-import { DependencyIdentifier } from "../../core/container/Container"
-
-export const ApplicationContextIdentifier: DependencyIdentifier<ApplicationContext> = { key: "Context" }
 
 export type EnvType = "DEV" | "TEST" | "PROD"
 
