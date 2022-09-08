@@ -1,38 +1,36 @@
 import Container from "./Container"
 import ContainerBuilder from "./ContainerBuilder"
 import Module from "./Module"
-import Scope from "./Scope"
+
+interface Params { 
+  scopes?: string[]
+  scope?: string,
+  base?: Container
+  modules?: Module[] 
+}
 
 export class ContainerFactory {
 
-  private modules: Module[]
+  scopes: string[]
+  scope: string
+  base: Container | undefined
+  modules: Module[]
 
-  constructor(
-    modules: Module[] = []
-  ) {
-    this.modules = [ ...modules ]
+  constructor(params: Params = {}) {
+    this.scopes = params.scopes || [ "SINGLETON", "REQUEST" ]
+    this.scope = params.scope || "SINGLETON"
+    this.base = params.base
+    this.modules = params.modules || []
   }
 
-  public addModule(module: Module) {
-    this.modules.push(module)
-  }
+  public getContainer() {
 
-  public addModules(modules: Module[]) {
-    this.modules.push(...modules)
-  }
-
-  public getContainer(params: { scope?: Scope, base?: Container } = {}) {
-
-    const { base, scope = "SINGLETON" } = params
-
-    let container: Container | undefined = base
-
-    const scopes: Scope[] = [ "SINGLETON", "REQUEST" ]
-    const lastIndex = scopes.indexOf(scope) + 1
+    const lastIndex = this.scopes.indexOf(this.scope) + 1
+    let container = this.base
 
     for (let i = 0; i < lastIndex; i++) {
       var builder = new ContainerBuilder(container)
-      this.modules.forEach(m => m.register(builder, { scope: scopes[i] }))
+      this.modules.forEach(m => m.register(builder, { scope: this.scopes[i] as any }))
       container = builder.build()
     }
 

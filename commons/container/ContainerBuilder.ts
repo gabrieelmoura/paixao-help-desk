@@ -15,9 +15,6 @@ export default class ContainerBuilder {
     };
   }
 
-  registerClass<T>(type: { id: DependencyIdentifier<T>, builder: Builder<T> }): void {
-  }
-
   registerFinalizer<T>(id: DependencyIdentifier<T>, finalizer: Finalizer<T>): void {
     this.bindings[id.key].finalizer = finalizer
   }

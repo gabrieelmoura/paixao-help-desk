@@ -2,7 +2,7 @@
 export type Builder<T> = (app: Container) => Promise<T>
 
 export interface DependencyIdentifier<T> {
-  _?: T
+  type?: new (...args: any[]) => T
   key: string
 }
 

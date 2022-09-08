@@ -2,14 +2,15 @@ import InvalidCredentialsError from "../error/InvalidCredentialsError"
 import UserRepository from "../repository/UserRepository"
 import EncryptService from "../security/EncryptService"
 import AuthService from "../auth/AuthService"
+import Command from "./Command"
 
-type Input = {
+export type Input = {
   email: string,
   password: string,
   context: any
 }
 
-export default class LoginCommand {
+export default class LoginCommand implements Command<Input, void> {
 
   constructor(
     private userRepository: UserRepository,

@@ -1,6 +1,8 @@
 import ApplicationContext from "./ApplicationContext"
+import Request from "../../core/http/Request"
+import Response from "../../core/http/Response"
 
-export default interface RequestContext extends ApplicationContext {
-  request: any
-  response: any
+export default interface RequestContext {
+  request: Request<any>
+  response: Response<any>
 }
