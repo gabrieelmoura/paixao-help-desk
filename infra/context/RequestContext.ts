@@ -1,4 +1,3 @@
-import ApplicationContext from "./ApplicationContext"
 import Request from "../../core/http/Request"
 import Response from "../../core/http/Response"
 

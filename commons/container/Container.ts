@@ -1,8 +1,9 @@
 
+export type Type<T> = new (...args: any[]) => T
+
 export type Builder<T> = (app: Container) => Promise<T>
 
 export interface DependencyIdentifier<T> {
-  type?: new (...args: any[]) => T
   key: string
 }
 

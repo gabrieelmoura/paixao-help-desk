@@ -12,6 +12,18 @@ export interface User {
 
 }
 
+export interface Session {
+
+  id: string
+
+  userId: number
+  userAgent: string
+
+  createdAt: Date
+  expiresAt: Date | null
+
+}
+
 export interface Unit {
 
   id: number

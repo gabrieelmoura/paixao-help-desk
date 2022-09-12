@@ -5,4 +5,6 @@ export default interface Response<T> {
 
   status(code: number): Response<T>
 
+  header(name: string, value: string): Response<T>
+
 }

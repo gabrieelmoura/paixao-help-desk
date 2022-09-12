@@ -31,8 +31,10 @@ CREATE TABLE PHD_USER_SESSION (
     `id` VARCHAR(255) PRIMARY KEY,
 
     `user_id` INT NOT NULL,
+    `user_agent` TEXT,
 
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `expires_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY (`user_id`) REFERENCES PHD_USER(`id`)
 

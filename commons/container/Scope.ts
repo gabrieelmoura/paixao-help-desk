@@ -1,4 +1,4 @@
 
-type Scope = "SINGLETON" | "REQUEST"
+type Scope = string
 
 export default Scope

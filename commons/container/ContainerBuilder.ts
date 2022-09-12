@@ -1,4 +1,4 @@
-import Container, { Builder, Finalizer, DependencyIdentifier, ContainerBinding } from "./Container"
+import Container, { Builder, Finalizer, DependencyIdentifier, ContainerBinding, Type } from "./Container"
 
 export default class ContainerBuilder {
 
